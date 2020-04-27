@@ -7,7 +7,7 @@ const cross = "&#10070;";
 let currentFontIcon = document.querySelector("#fonts span");
 console.log(currentFontIcon);
 
-document.querySelectorAll("#fonts input").forEach(i => {
+document.querySelectorAll("#fonts input").forEach((i) => {
   i.addEventListener("change", () => {
     // console.log(i);
     if (i.checked) {
@@ -33,7 +33,7 @@ const colors = [
   "#B5A6AB",
   "#ECCFCF",
   "#eceeeb",
-  "#BAB9B5"
+  "#BAB9B5",
 ];
 
 const colorBoxes = document.querySelectorAll(".color-box");
@@ -71,56 +71,54 @@ colorBoxes.forEach((b, i) => {
 
 // DISPLAY
 
-document.querySelector('#save').addEventListener('click', () => {
+document.querySelector("#save").addEventListener("click", () => {
   // document.querySelector('.edit').classList.add('hide');
   // document.querySelector('.image form').classList.add('hide');
-  // document.querySelector('#message').removeAttribute("contenteditable"); 
+  // document.querySelector('#message').removeAttribute("contenteditable");
   // document.querySelector('h1').textContent = 'Daily Postcard';
-  let msg = document.querySelector('#message');
-  let img = document.querySelector('#cardImg');
+  let msg = document.querySelector("#message");
+  let img = document.querySelector("#cardImg");
   let data = {
     image: img.src,
     color: currentColor.style.backgroundColor,
     font: msg.className,
-    message: msg.textContent
-  }
+    message: msg.textContent,
+  };
   console.log(data);
-  var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-  xmlhttp.open("POST", '/saveDisplay');
+  var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
+  xmlhttp.open("POST", "/saveDisplay");
   xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  xmlhttp.onloadend = function(e) {
+  xmlhttp.onloadend = function (e) {
     console.log(xmlhttp.responseText);
     window.location = "https://postcard-app.glitch.me/display.html";
-  }
+  };
   xmlhttp.send(JSON.stringify(data));
-})
-
-// UPLOAD IMAGE
-document.querySelector('#imgUpload').addEventListener('change', () => {
-  
-    // get the file with the file dialog box
-    const selectedFile = document.querySelector('#imgUpload').files[0];
-    // store it in a FormData object
-    const formData = new FormData();
-    formData.append('newImage',selectedFile, selectedFile.name);
-  
-    let button = document.querySelector('.btn');
-
-    // build an HTTP request data structure
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/upload", true);
-    xhr.onloadend = function(e) {
-        // Get the server's response to the upload
-        console.log(xhr.responseText);
-        let newImage = document.querySelector("#cardImg");
-        newImage.src = "https://postcard-app.glitch.me/images/"+selectedFile.name;
-        newImage.style.display = 'block';
-        document.querySelector('.image').classList.remove('upload');
-        button.textContent = 'Replace Image';
-    }
-  
-    button.textContent = 'Uploading...';
-    // actually send the request
-    xhr.send(formData);
 });
 
+// UPLOAD IMAGE
+document.querySelector("#imgUpload").addEventListener("change", () => {
+  // get the file with the file dialog box
+  const selectedFile = document.querySelector("#imgUpload").files[0];
+  // store it in a FormData object
+  const formData = new FormData();
+  formData.append("newImage", selectedFile, selectedFile.name);
+
+  let button = document.querySelector(".btn");
+
+  // build an HTTP request data structure
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "/upload", true);
+  xhr.onloadend = function (e) {
+    // Get the server's response to the upload
+    console.log(xhr.responseText);
+    let newImage = document.querySelector("#cardImg");
+    newImage.src = "https://postcard-app.glitch.me/images/" + selectedFile.name;
+    newImage.style.display = "block";
+    document.querySelector(".image").classList.remove("upload");
+    button.textContent = "Replace Image";
+  };
+
+  button.textContent = "Uploading...";
+  // actually send the request
+  xhr.send(formData);
+});
