@@ -18,6 +18,7 @@ function sharePost() {
 // Called by the event listener that is waiting for a file to be chosen
 function uploadFile() {
   // get the file chosen by the file dialog control
+  console.log("here");
   const selectedFileAll = document.getElementById("fileChooser").files;
   const selectedFile = selectedFileAll[0];
   console.log(selectedFileAll);
@@ -39,10 +40,17 @@ function uploadFile() {
     // now that the image is on the server, we can display it!
     let newImage = document.getElementById("serverImage");
     newImage.src = "../images/" + selectedFile.name;
-    document.getElementById("chgImg").textContent = "Replace Image";
-    document.getElementById("chgImg").style.border = "1px solid";
-    document.getElementById("chgImg").style.fontSize = "15px";
-    document.getElementById("chgImg").style.margin = "5%";
+    document.getElementById("but").className = "replaceImg";
+    // document.getElementById("but").textContent =
+    //   "Replace Image" +
+    //   (
+    //     <input
+    //       type="file"
+    //       id="fileChooser"
+    //       accept="image/png, .jpeg, .jpg, image/gif"
+    //     />
+    //   );
+    document.getElementById("but").textContent = "Replace Image";
     document.getElementsByClassName("imageWrapper")[0].style.border = "none";
     document.getElementsByClassName("imageWrapper")[0].style.margin = "0";
     document.getElementsByClassName("imageWrapper")[0].style.paddingRight = "0";
@@ -54,7 +62,7 @@ function uploadFile() {
 }
 
 // Add event listener to the file input element
-document.getElementById("chgImg").addEventListener("change", uploadFile);
+document.getElementById("fileChooser").addEventListener("change", uploadFile);
 
 //======================change font======================
 function chBackFont(self) {
