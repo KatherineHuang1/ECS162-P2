@@ -1,6 +1,10 @@
 // Always include at top of Javascript file
 "use strict";
 var current_color = "#e6e2cf";
+
+// Add event listener to the file input element
+document.getElementById("fileChooser").addEventListener("change", uploadFile);
+
 //======================share post======================
 function sharePost() {
   var data = {
@@ -10,6 +14,19 @@ function sharePost() {
     color: current_color,
   };
   console.log(data);
+  let dataJSON = JSON.stringify(data);
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "/display", true);
+
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+  xhr.send(dataJSON);
+
+  xhr.onloadend = function (e) {
+    console.log(xhr.responseText);
+    window.location = "./display.html";
+  };
 }
 
 //======================upload image======================
@@ -18,7 +35,6 @@ function sharePost() {
 // Called by the event listener that is waiting for a file to be chosen
 function uploadFile() {
   // get the file chosen by the file dialog control
-  console.log("here");
   const selectedFileAll = document.getElementById("fileChooser").files;
   const selectedFile = selectedFileAll[0];
   console.log(selectedFileAll);
@@ -35,34 +51,23 @@ function uploadFile() {
   // callback function executed when the HTTP response comes back
   xhr.onloadend = function (e) {
     // Get the server's response body
-    console.log(xhr.responseText);
+    console.log("DEBUG: " + xhr.responseText);
 
     // now that the image is on the server, we can display it!
     let newImage = document.getElementById("serverImage");
     newImage.src = "../images/" + selectedFile.name;
+
+    // change class to change style and change content
     document.getElementById("but").className = "replaceImg";
-    // document.getElementById("but").textContent =
-    //   "Replace Image" +
-    //   (
-    //     <input
-    //       type="file"
-    //       id="fileChooser"
-    //       accept="image/png, .jpeg, .jpg, image/gif"
-    //     />
-    //   );
     document.getElementById("but").textContent = "Replace Image";
     document.getElementsByClassName("imageWrapper")[0].style.border = "none";
-    document.getElementsByClassName("imageWrapper")[0].style.margin = "0";
-    document.getElementsByClassName("imageWrapper")[0].style.paddingRight = "0";
+
     console.log("upload image!");
   };
 
   // actually send the request
   xhr.send(formData);
 }
-
-// Add event listener to the file input element
-document.getElementById("fileChooser").addEventListener("change", uploadFile);
 
 //======================change font======================
 function chBackFont(self) {
@@ -118,8 +123,4 @@ function mouseout(self) {
   }
   self.style.border = "none";
   document.getElementById("postcard").style.background = current_color;
-}
-
-function test(a) {
-  console.log(a);
 }
